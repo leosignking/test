@@ -1,0 +1,60 @@
+group 'test'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+mainClassName = 'org.springframework.batch.core.launch.support.CommandLineJobRunner'
+
+repositories {
+    mavenCentral()
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'SI Batch',
+                'Implementation-Version': version,
+                'Main-Class': 'de.mb.batch.App'
+    }
+
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }}
+    with jar
+}
+
+dependencies {
+    compile 'org.springframework:spring-beans:3.2.1.RELEASE'
+    compile 'org.springframework.batch:spring-batch-core:2.1.9.RELEASE'
+    compile 'org.springframework.batch:spring-batch-infrastructure:2.1.9.RELEASE'
+    compile 'org.springframework:spring-aop:2.5.6'
+    compile 'org.springframework:spring-context:2.5.6'
+    compile 'org.springframework:spring-core:3.2.1.RELEASE'
+    compile 'org.springframework:spring-jdbc:2.5.6'
+    compile 'org.springframework:spring-tx:2.5.6'
+    compile 'log4j:log4j:1.2.17'
+    compile 'commons-lang:commons-lang:2.2'
+    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+
+    testCompile 'org.springframework:spring-test:3.2.1.RELEASE'
+    testCompile 'org.springframework.batch:spring-batch-test:2.1.9.RELEASE'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+/*
+ * Execute the batch job with this gradle task
+ *
+ * i.e.: gradle run -Pargs='applicationContext.xml customerJob'
+ *
+ */
+run {
+    if ( project.hasProperty('args') ) {
+        args project.args.split('\\s+')
+    }
+}
