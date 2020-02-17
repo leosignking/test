@@ -8,6 +8,7 @@ node {
         }
         stage ('Build') {
         	sh "echo 'shell scripts to build project...'"
+        	sh "gradle build --info"
         }
         stage ('Tests') {
 	        parallel 'static': {
