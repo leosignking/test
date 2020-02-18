@@ -2,12 +2,9 @@ group 'test'
 version '1.0'
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'application'
 
 sourceCompatibility = 1.8
-
-mainClassName = 'org.springframework.batch.core.launch.support.CommandLineJobRunner'
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -17,7 +14,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'SI Batch',
                 'Implementation-Version': version,
-                'Main-Class': 'de.mb.batch.App'
+                'Main-Class': 'com.learn.test.Test'
     }
 
     baseName = project.name + '-all'
@@ -29,18 +26,3 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
-test {
-    systemProperties 'property': 'value'
-}
-
-/*
- * Execute the batch job with this gradle task
- *
- * i.e.: gradle run -Pargs='applicationContext.xml customerJob'
- *
- */
-run {
-    if ( project.hasProperty('args') ) {
-        args project.args.split('\\s+')
-    }
-}
