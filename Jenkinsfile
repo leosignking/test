@@ -8,16 +8,16 @@ node {
         }
         stage ('Build') {
         	sh "echo 'shell scripts to build project...'"
-        	sh "gradle build --info"
+        	sh "./gradlew build --info"
         }
         stage ('Tests') {
 	        parallel 'static': {
 	            sh "echo 'shell scripts to run static tests...'"
-	            //sh "gradle testClasses"
+	            sh "./gradlew testClasses"
 	        },
 	        'unit': {
 	            sh "echo 'shell scripts to run unit tests...'"
-	            //sh "gradle testClasses"
+	            sh "./gradlew testClasses"
 	        },
 	        'integration': {
 	            sh "echo 'shell scripts to run integration tests...'"
